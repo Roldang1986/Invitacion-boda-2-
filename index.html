@@ -144,7 +144,7 @@
             nombre: '', 
             nombrePareja: '', 
             asistencia: 'Confirmar asistencia', 
-            asistenciaPreWedding: 'Confirmar Asistencia', 
+            asistenciaPreWedding: 'Confirmar asistencia', 
             alergias: '' 
           });
 
@@ -199,7 +199,7 @@
                 method: 'POST', 
                 mode: 'no-cors', // Evita bloqueos de seguridad de Google
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString() // Convertido a texto para que sea compatible con todos los navegadores
+                body: params.toString() // Convertido a texto para compatibilidad total
               });
             } catch (error) { 
               console.error("Fallo de red:", error); 
@@ -224,7 +224,7 @@
           // EL CEREBRO LÓGICO: Empatía Condicional
           const getFeedbackMessage = () => {
             const asisteBoda = formData.asistencia === 'Confirmar asistencia';
-            const asistePre = formData.asistenciaPreWedding === 'Confirmar Asistencia';
+            const asistePre = formData.asistenciaPreWedding === 'Confirmar asistencia';
 
             if (!asisteBoda && !asistePre) {
               return "Qué lástima que no nos puedas acompañar presencialmente, pero sabemos que nos acompañan de corazón.";
@@ -546,7 +546,7 @@
                       <div className="space-y-4 text-left">
                         <label className="text-[11px] uppercase tracking-[0.2em] font-sans font-bold text-[#5C768D] flex items-center gap-2"><Glass className="w-4 h-4" /> ¿Nos acompañarás al Pre-Wedding el viernes?</label>
                         <select name={ENTRY_IDS.preWedding} value={formData.asistenciaPreWedding} onChange={handleInputChange('asistenciaPreWedding')} className="w-full bg-white/90 border border-transparent focus:border-[#5C768D] rounded-2xl px-6 py-5 outline-none font-sans text-[#2C3E50] cursor-pointer transition-colors">
-                          <option value="Confirmar Asistencia">Sí, allí estaremos para brindar</option>
+                          <option value="Confirmar asistencia">Sí, allí estaremos para brindar</option>
                           <option value="Lamentablemente no podré ir">No podremos, nos vemos directo el sábado</option>
                         </select>
                       </div>
