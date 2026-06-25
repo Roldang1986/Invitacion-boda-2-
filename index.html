@@ -4,20 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laura & Gabriel | Invitación de Boda</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0% { transform: translateY(0) translateX(0); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px) translateX(20px); opacity: 0; } }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+        .animate-fade-in-up { animation: fade-in-up 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .animate-float { animation: float infinite ease-in-out; }
+        html { scroll-behavior: smooth; }
+        .text-shadow-md { text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+    </style>
 </head>
 <body class="bg-[#FDF7F2]">
+    
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-type="module" data-presets="react">
+        const { useState, useEffect, useRef, useMemo } = window.React;
 
         // --- SISTEMA ICONOGRÁFICO ---
-        const createIcon = (paths) => ({ className, fill="none", ...props }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} dangerouslySetInnerHTML={{__html: paths}} {...props} />
+        const createIcon = (paths) => ({ className, fill="none", style, onClick, title }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style} onClick={onClick} title={title} dangerouslySetInnerHTML={{__html: paths}} />
         );
 
         const MapPin = createIcon('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>');
@@ -72,23 +105,28 @@
           </div>
         );
 
-        const GoldenDust = () => (
+        const GoldenDust = () => {
+          const particles = useMemo(() => [...Array(25)].map((_, i) => ({
+            width: (((i * 7 + 3) % 4) + 2) + 'px',
+            height: (((i * 11 + 5) % 4) + 2) + 'px',
+            left: ((i * 13 + 1) % 100) + '%',
+            top: ((i * 17 + 7) % 100) + '%',
+            animationDuration: (((i * 3 + 2) % 15) + 10) + 's',
+            animationDelay: ((i * 2) % 5) + 's',
+            opacity: (((i * 9 + 1) % 6) / 10) + 0.2
+          })), []);
+          return (
           <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-            {[...Array(25)].map((_, i) => (
+            {particles.map((style, i) => (
               <div 
                 key={i} 
                 className="absolute rounded-full bg-[#EAD3C6] animate-float"
-                style={{
-                  width: Math.random() * 4 + 2 + 'px', height: Math.random() * 4 + 2 + 'px',
-                  left: Math.random() * 100 + '%', top: Math.random() * 100 + '%',
-                  animationDuration: Math.random() * 15 + 10 + 's',
-                  animationDelay: Math.random() * 5 + 's',
-                  opacity: Math.random() * 0.6 + 0.2
-                }}
+                style={style}
               ></div>
             ))}
           </div>
-        );
+          );
+        };
 
         const AtmosphericLandscape = ({ src, opacity = "opacity-[0.12]", blend = "mix-blend-luminosity", bgColor = "from-[#FDF7F2] to-[#FDF7F2]" }) => (
           <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -571,15 +609,8 @@
           );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const root = window.ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-    </script>
-    // --- CORRECCIÓN CRÍTICA DE MONTAJE ---
-        window.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('root');
-            const root = ReactDOM.createRoot(container);
-            root.render(<App />);
-        });
     </script>
 </body>
 </html>
